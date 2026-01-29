@@ -192,7 +192,7 @@ def get_black_litterman_weights(curr_date):
 # ==============================================================================
 print("\n[3] Executing ARIMA-GARCH Backtest...")
 
-rebal_dates = returns_total.loc["2020-01-01":].resample('W-FRI').last().index
+rebal_dates = returns_total.loc["2020-01-01":].resample('D').last().index
 daily_dates = returns_total.loc["2020-01-01":].index
 rebal_set = set(rebal_dates)
 
