@@ -8,19 +8,26 @@ import os
 import warnings
 
 # ==============================================================================
-# 1. CONFIGURATION
+# 1. CONFIGURATION & DIRECTORY SETUP
 # ==============================================================================
 warnings.filterwarnings("ignore")
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 sns.set_theme(style="whitegrid")
 
+# --- FOLDER MANAGEMENT ---
+OUTPUT_DIR = "backtest_results"
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+    print(f">>> Created output directory: {OUTPUT_DIR}")
+
 # Strategy Parameters
 TARGET_BUDGET = 1000000.0   
 LEVERAGE_PER_POS = 0.20     # 20% per position to manage drawdown
 TRANSACTION_COST = 0.0005   # 5 bps
 LOOKBACK_MOMENTUM = 252     # 1 Year Lookback
-FILE_RETURNS = "MASTER_RETURNS.csv"
+# File path is now inside the folder
+FILE_RETURNS = os.path.join(OUTPUT_DIR, "MASTER_RETURNS.csv")
 
 # Risk Parameters
 CONFIDENCE_LEVEL = 0.95  
@@ -157,7 +164,9 @@ for i, d in enumerate(daily_dates[1:]):
 # Align DataFrames
 df_export = returns_total.loc[daily_dates[1:]].copy()
 df_export['STRATEGY'] = strategy_returns
+# Save to folder
 df_export.to_csv(FILE_RETURNS)
+print(f"-> Saved returns data to: {FILE_RETURNS}")
 
 # Create Equity DataFrame for Reporting
 df_equity = pd.DataFrame({'Equity': equity_curve}, index=equity_dates)
@@ -221,8 +230,10 @@ def generate_visuals():
 
     plt.tight_layout()
     plt.suptitle("Strategy Performance by Year", y=1.02, fontsize=14)
-    plt.savefig('CHART_YEARLY_SUBPLOTS.png', dpi=150)
-    print("-> Generated CHART_YEARLY_SUBPLOTS.png")
+    # Save to folder
+    save_path = os.path.join(OUTPUT_DIR, 'CHART_YEARLY_SUBPLOTS.png')
+    plt.savefig(save_path, dpi=150)
+    print(f"-> Generated {save_path}")
 
     # --- CHART 2: RISK VS RETURN (TOTAL RETURN) ---
     summary = pd.DataFrame()
@@ -253,8 +264,10 @@ def generate_visuals():
     plt.ylabel('Annualized Total Return', fontsize=12)
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig('CHART_RISK_RETURN.png', dpi=150)
-    print("-> Generated CHART_RISK_RETURN.png")
+    # Save to folder
+    save_path = os.path.join(OUTPUT_DIR, 'CHART_RISK_RETURN.png')
+    plt.savefig(save_path, dpi=150)
+    print(f"-> Generated {save_path}")
 
     # --- CHART 3: DRAWDOWNS ---
     plt.figure(figsize=(12, 6))
@@ -267,8 +280,10 @@ def generate_visuals():
     plt.title('Drawdown Analysis', fontsize=14)
     plt.ylabel('Drawdown', fontsize=12)
     plt.grid(True, alpha=0.3)
-    plt.savefig('CHART_DRAWDOWN.png', dpi=150)
-    print("-> Generated CHART_DRAWDOWN.png")
+    # Save to folder
+    save_path = os.path.join(OUTPUT_DIR, 'CHART_DRAWDOWN.png')
+    plt.savefig(save_path, dpi=150)
+    print(f"-> Generated {save_path}")
 
     # Display Charts
     plt.show()
