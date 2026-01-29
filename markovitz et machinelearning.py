@@ -323,26 +323,7 @@ def generate_visuals():
     summary['Returns'] = returns.mean() * 252
     summary['Volatility'] = returns.std() * np.sqrt(252)
     
-    plt.figure(figsize=(12, 8))
-    # Toutes les devises en bleu
-    sns.scatterplot(data=summary.drop('STRATEGY', errors='ignore'), x='Volatility', y='Returns', s=100, color='gray', alpha=0.5, label='Paires FX')
-    # La Stratégie en ROUGE GROS
-    if 'STRATEGY' in summary.index:
-        strat = summary.loc['STRATEGY']
-        plt.scatter(strat['Volatility'], strat['Returns'], s=300, color='red', label='TA STRATÉGIE', edgecolors='black')
-        plt.text(strat['Volatility']+0.005, strat['Returns'], "STRATEGY", fontsize=12, fontweight='bold', color='red')
 
-    for i in range(len(summary)):
-        if summary.index[i] != 'STRATEGY':
-            plt.text(summary.Volatility[i], summary.Returns[i], summary.index[i], fontsize=8, alpha=0.7)
-
-    plt.axhline(0, color='black', linestyle='--')
-    plt.title('Efficient Frontier : Ta Stratégie vs Le Marché', fontsize=16)
-    plt.xlabel('Risque (Volatilité)', fontsize=12)
-    plt.ylabel('Rendement', fontsize=12)
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    plt.savefig('CHART_2_RISK_RETURN.png', dpi=150)
 
     # 3. DISTRIBUTION STRATÉGIE (Histogramme)
     plt.figure(figsize=(12, 6))
