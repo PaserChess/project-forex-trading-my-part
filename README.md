@@ -5,7 +5,7 @@ Result: Loss (-4%) or very low return.
 Conclusion: "Being passive doesn't work in FX."
 
 2. The "Predictive" Approach (Time Series / AI)
-Strategy: ARIMA + GARCH or ARIMA or GARCH --------------->>>> what I'll be working on next
+Strategy: ARIMA + GARCH or ARIMA or GARCH --------------->>>> what I'll be working on next, because very biased rn
 Result: High Return (+28%) but massive crash (-44% Drawdown).
 Analysis: "Predicting the next day is possible, but the 'Signal-to-Noise' ratio is so low that we need 5x leverage to make money. This creates unacceptable tail risk."
 
